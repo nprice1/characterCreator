@@ -1,0 +1,14 @@
+.openapi-generator-ignore
+README.md
+pom.xml
+src/main/java/com/nolanprice/OpenAPI2SpringBoot.java
+src/main/java/com/nolanprice/RFC3339DateFormat.java
+src/main/java/com/nolanprice/config/HomeController.java
+src/main/java/com/nolanprice/config/OpenAPIDocumentationConfig.java
+src/main/java/com/nolanprice/controllers/ApiUtil.java
+src/main/java/com/nolanprice/controllers/InfoApi.java
+src/main/java/com/nolanprice/controllers/InfoApiController.java
+src/main/java/com/nolanprice/controllers/SpriteApi.java
+src/main/java/com/nolanprice/controllers/SpriteApiController.java
+src/main/java/com/nolanprice/model/CharacterInfo.java
+src/main/resources/application.properties

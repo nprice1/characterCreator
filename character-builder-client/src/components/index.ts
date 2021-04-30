@@ -1,0 +1,1 @@
+export { CharacterInfoComponent } from './CharacterInfoComponent';

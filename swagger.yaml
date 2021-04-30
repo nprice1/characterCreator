@@ -1,0 +1,158 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8080/character-builder/v1
+info:
+  description: Random D&D 5th Edition Character Creator
+  version: 1.0.0
+  title: Character Creator
+  contact:
+    name: nolan@nolanprice.com
+paths:
+  /info:
+    get:
+      tags:
+        - info
+      summary: Generate the characters details (background, class, race, starting items, etc.)
+      operationId: getInfo
+      responses:
+        '200':
+          description: Characters info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CharacterInfo'
+  /sprite:
+    post:
+      tags:
+        - sprite
+      summary: Generate the characters sprite sheet
+      operationId: getSpriteSheet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CharacterInfo'
+      responses:
+        '200':
+          description: The sprite sheet for the provided character info
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+components:
+  schemas:
+    CharacterInfo:
+      type: object
+      description: The general details of a character
+      properties:
+        name:
+          type: string
+          description: The name of the character
+        race:
+          type: string
+          description: The race of the character
+        class:
+          type: string
+          description: The class for the character
+        background:
+          type: string
+          description: The name of the background for the character
+        alignment: 
+          type: string
+          description: The alignment for the character
+        strength:
+          $ref: '#/components/schemas/AbilityScore'
+        dexterity:
+          $ref: '#/components/schemas/AbilityScore'
+        intelligence:
+          $ref: '#/components/schemas/AbilityScore'
+        wisdom:
+          $ref: '#/components/schemas/AbilityScore'
+        constitution:
+          $ref: '#/components/schemas/AbilityScore'
+        charisma:
+          $ref: '#/components/schemas/AbilityScore'
+        proficiencyModifier:
+          type: integer
+          description: The proficiency modifier for the character
+        skills:
+          type: array
+          items:
+            type: string
+            description: A skill of the character
+        proficiencies:
+          type: array
+          items:
+            type: string
+            description: A proficiency of the character
+        languages:
+          type: array
+          items:
+            type: string
+            description: Languages spoken by the character
+        equipment:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Equipment'
+        speed:
+          type: string
+          description: The movement speed for the character
+        hitDice:
+          type: integer
+          description: The hit dice for the character
+        feature:
+          $ref: '#/components/schemas/Feature'
+        traits:
+          type: array
+          items:
+            type: string
+            description: A personality trait of the character
+        ideals:
+          type: array
+          items:
+            type: string
+            description: An ideal for the character
+        bonds:
+          type: array
+          items:
+            type: string
+            description: A bond for the character
+        flaws:
+          type: array
+          items:
+            type: string
+            description: A flaw of the character
+    Feature:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the feature
+        description:
+          type: array
+          items:
+            type: string
+            description: The description of the features effects
+    AbilityScore:
+      type: object
+      properties:
+        base:
+          type: integer
+          description: The base stat
+        modifier:
+          type: integer
+          description: The modifier for the stat
+        proficient:
+          type: boolean
+          description: Whether or not the character is proficient with this ability for saving throws
+    Equipment:
+      type: object
+      description: Piece of equipment
+      properties:
+        name:
+          type: string
+          description: Name of equipment
+        quantity:
+          type: integer
+          description: The number of the given piece of equipment available

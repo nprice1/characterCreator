@@ -1,0 +1,483 @@
+[
+  {
+    "conditions": [
+      {
+        "equipment": [
+          "Arrow"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/behind_body/equipment/quiver.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "race": [
+          "Human",
+          "Dwarf",
+          "Halfling",
+          "Gnome",
+          "Tiefling",
+          "Dragonborn"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/body/{{gender}}/dark.png",
+          "sheets/body/{{gender}}/dark2.png",
+          "sheets/body/{{gender}}/light.png",
+          "sheets/body/male/skeleton.png",
+          "sheets/body/{{gender}}/tanned.png",
+          "sheets/body/{{gender}}/tanned2.png"
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          "sheets/body/{{gender}}/ears/bigears_dark.png",
+          "sheets/body/{{gender}}/ears/bigears_dark2.png",
+          "sheets/body/{{gender}}/ears/bigears_light.png",
+          "sheets/body/{{gender}}/ears/bigears_tanned.png",
+          "sheets/body/{{gender}}/ears/bigears_tanned2.png"
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          "sheets/body/{{gender}}/nose/bignose_dark.png",
+          "sheets/body/{{gender}}/nose/bignose_dark2.png",
+          "sheets/body/{{gender}}/nose/bignose_light.png",
+          "sheets/body/{{gender}}/nose/bignose_tanned.png",
+          "sheets/body/{{gender}}/nose/bignose_tanned2.png",
+          "sheets/body/{{gender}}/nose/buttonnose_dark.png",
+          "sheets/body/{{gender}}/nose/buttonnose_dark2.png",
+          "sheets/body/{{gender}}/nose/buttonnose_light.png",
+          "sheets/body/{{gender}}/nose/buttonnose_tanned.png",
+          "sheets/body/{{gender}}/nose/buttonnose_tanned2.png",
+          "sheets/body/{{gender}}/nose/straightnose_dark.png",
+          "sheets/body/{{gender}}/nose/straightnose_dark2.png",
+          "sheets/body/{{gender}}/nose/straightnose_light.png",
+          "sheets/body/{{gender}}/nose/straightnose_tanned.png",
+          "sheets/body/{{gender}}/nose/straightnose_tanned2.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "race": [
+          "Elf",
+          "Half-Elf"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/body/{{gender}}/dark.png",
+          "sheets/body/{{gender}}/dark2.png",
+          "sheets/body/{{gender}}/darkelf.png",
+          "sheets/body/{{gender}}/darkelf2.png",
+          "sheets/body/{{gender}}/light.png",
+          "sheets/body/male/skeleton.png",
+          "sheets/body/{{gender}}/tanned.png",
+          "sheets/body/{{gender}}/tanned2.png"
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          "sheets/body/{{gender}}/ears/elvenears_dark.png",
+          "sheets/body/{{gender}}/ears/elvenears_dark2.png",
+          "sheets/body/male/ears/elvenears_darkelf.png",
+          "sheets/body/female/ears/elvenears_darkelf1.png",
+          "sheets/body/{{gender}}/ears/elvenears_darkelf2.png",
+          "sheets/body/{{gender}}/ears/elvenears_light.png",
+          "sheets/body/{{gender}}/ears/elvenears_tanned.png",
+          "sheets/body/{{gender}}/ears/elvenears_tanned2.png"
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          "sheets/body/{{gender}}/nose/bignose_dark.png",
+          "sheets/body/{{gender}}/nose/bignose_dark2.png",
+          "sheets/body/{{gender}}/nose/bignose_darkelf.png",
+          "sheets/body/{{gender}}/nose/bignose_darkelf2.png",
+          "sheets/body/{{gender}}/nose/bignose_light.png",
+          "sheets/body/{{gender}}/nose/bignose_tanned.png",
+          "sheets/body/{{gender}}/nose/bignose_tanned2.png",
+          "sheets/body/{{gender}}/nose/buttonnose_dark.png",
+          "sheets/body/{{gender}}/nose/buttonnose_dark2.png",
+          "sheets/body/{{gender}}/nose/buttonnose_darkelf.png",
+          "sheets/body/{{gender}}/nose/buttonnose_darkelf2.png",
+          "sheets/body/{{gender}}/nose/buttonnose_light.png",
+          "sheets/body/{{gender}}/nose/buttonnose_tanned.png",
+          "sheets/body/{{gender}}/nose/buttonnose_tanned2.png",
+          "sheets/body/{{gender}}/nose/straightnose_dark.png",
+          "sheets/body/{{gender}}/nose/straightnose_dark2.png",
+          "sheets/body/{{gender}}/nose/straightnose_darkelf.png",
+          "sheets/body/{{gender}}/nose/straightnose_darkelf2.png",
+          "sheets/body/{{gender}}/nose/straightnose_light.png",
+          "sheets/body/{{gender}}/nose/straightnose_tanned.png",
+          "sheets/body/{{gender}}/nose/straightnose_tanned2.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "race": [
+          "Half-Orc"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/body/{{gender}}/orc.png",
+          "sheets/body/{{gender}}/red_orc.png",
+          "sheets/body/male/skeleton.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/body/{{gender}}/eyes/blue.png",
+          "sheets/body/{{gender}}/eyes/brown.png",
+          "sheets/body/{{gender}}/eyes/gray.png",
+          "sheets/body/{{gender}}/eyes/green.png",
+          "sheets/body/{{gender}}/eyes/orange.png",
+          "sheets/body/{{gender}}/eyes/purple.png",
+          "sheets/body/{{gender}}/eyes/red.png",
+          "sheets/body/{{gender}}/eyes/yellow.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "gender": [
+          "female"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/hair/female/bangslong.png",
+          "sheets/hair/female/bangslong2.png",
+          "sheets/hair/female/bangsshort.png",
+          "sheets/hair/female/bunches.png",
+          "sheets/hair/female/loose.png",
+          "sheets/hair/female/pixie.png",
+          "sheets/hair/female/ponytail.png",
+          "sheets/hair/female/ponytail2.png",
+          "sheets/hair/female/princess.png",
+          "sheets/hair/female/shoulderl.png",
+          "sheets/hair/female/shoulderr.png",
+          "sheets/hair/female/swoop.png",
+          "sheets/hair/female/unkempt.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "gender": [
+          "male"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/hair/male/bangs.png",
+          "sheets/hair/male/bedhead.png",
+          "sheets/hair/male/long.png",
+          "sheets/hair/male/longhawk.png",
+          "sheets/hair/male/messy1.png",
+          "sheets/hair/male/messy2.png",
+          "sheets/hair/male/mohawk.png",
+          "sheets/hair/male/page.png",
+          "sheets/hair/male/page2.png",
+          "sheets/hair/male/parted.png",
+          "sheets/hair/male/shorthawk.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "equipment": [
+          "Clothes, common"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/feet/shoes/{{gender}}/black_shoes_{{gender}}.png",
+          "sheets/feet/shoes/{{gender}}/brown_shoes_{{gender}}.png",
+          "sheets/feet/shoes/{{gender}}/maroon_shoes_{{gender}}.png"
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          "sheets/legs/pants/{{gender}}/magenta_pants_{{gender}}.png",
+          "sheets/legs/pants/{{gender}}/red_pants_{{gender}}.png",
+          "sheets/legs/pants/{{gender}}/teal_pants_{{gender}}.png",
+          "sheets/legs/pants/{{gender}}/white_pants_{{gender}}.png",
+          "sheets/legs/skirt/female/robe_skirt_female_incomplete.png",
+          "sheets/legs/skirt/male/robe_skirt_male.png"
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          "sheets/torso/shirts/longsleeve/male/brown_longsleeve.png",
+          "sheets/torso/shirts/longsleeve/male/maroon_longsleeve.png",
+          "sheets/torso/shirts/longsleeve/male/teal_longsleeve.png",
+          "sheets/torso/shirts/longsleeve/male/white_longsleeve.png",
+          "sheets/torso/shirts/sleeveless/female/brown_pirate.png",
+          "sheets/torso/shirts/sleeveless/female/brown_sleeveless.png",
+          "sheets/torso/shirts/sleeveless/female/maroon_pirate.png",
+          "sheets/torso/shirts/sleeveless/female/maroon_sleeveless.png",
+          "sheets/torso/shirts/sleeveless/female/teal_pirate.png",
+          "sheets/torso/shirts/sleeveless/female/teal_sleeveless.png",
+          "sheets/torso/shirts/sleeveless/female/white_pirate.png",
+          "sheets/torso/shirts/sleeveless/female/white_sleeveless.png",
+          "sheets/torso/tunics/female/brown_tunic.png",
+          "sheets/torso/tunics/female/maroon_tunic.png",
+          "sheets/torso/tunics/female/teal_tunic.png",
+          "sheets/torso/tunics/female/white_tunic.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "equipment": [
+          "Leather"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/torso/leather/chest_{{gender}}.png",
+          "sheets/torso/leather/shoulders_{{gender}}.png"
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          "sheets/hands/bracers/{{gender}}/leather_bracers_{{gender}}.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "equipment": [
+          "Chain Mail"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/torso/chain/mail_{{gender}}.png",
+          "sheets/torso/chain/tabard/jacket_{{gender}}.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "equipment": [
+          "Scale Mail"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 2,
+        "from": [
+          "sheets/torso/plate/arms_{{gender}}.png",
+          "sheets/torso/plate/chest_{{gender}}.png"
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          "sheets/feet/armor/{{gender}}/metal_boots_{{gender}}.png"
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          "sheets/head/helms/{{gender}}/metal_helm_{{gender}}.png"
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          "sheets/hands/gloves/{{gender}}/metal_gloves_{{gender}}.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "equipment": [
+          "Longbow"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/weapons/left hand/either/arrow.png"
+        ]
+      },
+      {
+        "choose": 1,
+        "from": [
+          "sheets/weapons/right hand/either/bow.png",
+          "sheets/weapons/right hand/either/greatbow.png",
+          "sheets/weapons/right hand/either/recurvebow.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "equipment": [
+          "Dagger",
+          "Shortsword",
+          "Rapier",
+          "Saber"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/weapons/right hand/{{gender}}/dagger_{{gender}}.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "equipment": [
+          "Spear",
+          "Halberd",
+          "Javelin"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/weapons/right hand/{{gender}}/spear_{{gender}}.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "equipment": [
+          "Club",
+          "Wand",
+          "Quarterstaff"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/weapons/right hand/{{gender}}/woodwand_{{gender}}.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "equipment": [
+          "Mace",
+          "Handaxe",
+          "Warhammer",
+          "Maul"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/weapons/right hand/female/steelwand_female.png"
+        ]
+      }
+    ]
+  },
+  {
+    "conditions": [
+      {
+        "equipment": [
+          "Shield"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "choose": 1,
+        "from": [
+          "sheets/weapons/left hand/male/shield_male_cutoutforbody.png",
+          "sheets/weapons/left hand/male/shield_male_cutoutforhat.png"
+        ]
+      }
+    ]
+  }
+]

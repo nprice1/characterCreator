@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.character-info {
+    padding-left: 10px;
+    width: 300px;
+}
+
+.minor-stats {
+    display: grid;
+    grid-template-columns: 150px 150px 150px 150px 150px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
+    padding-bottom: 50px;
+}
+
+.lists {
+    display: grid;
+    grid-template-columns: 200px 200px 200px 200px;
+}
+
+.long-list {
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+
+.stats div {
+    padding: 10px;
+}

@@ -1,0 +1,8 @@
+{
+  "basePackage": "com.nolanprice",
+  "configPackage": "com.nolanprice.config",
+  "apiPackage": "com.nolanprice.controllers",
+  "modelPackage": "com.nolanprice.model",
+  "groupId": "com.nolanprice",
+  "artifactId": "character-creator"
+}
