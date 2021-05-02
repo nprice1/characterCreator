@@ -3,6 +3,8 @@
 This project sets out to randomly generate a random DND character. It will create most of the information 
 required for the character sheet, as well as a random sprite animation based on that character.
 
+![character creator demo](https://nolanprice.com/img/character-creator.gif)
+
 ## Requirements
 
 - Docker

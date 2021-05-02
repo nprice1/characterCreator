@@ -43,7 +43,7 @@ const generateList = (listName?: string, values?: string[]): JSX.Element => {
 }
 
 const getHp = (info: CharacterInfo): number => {
-    if (!info.hitDice || !info.constitution || !info.constitution.modifier) {
+    if (!info.hitDice || !info.constitution || (info.constitution.modifier == null)) {
         return 0;
     }
     return info.hitDice + info.constitution.modifier;
@@ -65,7 +65,7 @@ const CharacterInfoComponent = () => {
                 });
             }
         })();
-    }, [])
+    }, []);
 
     if (!state) {
         return (

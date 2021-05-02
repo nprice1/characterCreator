@@ -140,21 +140,21 @@ const SpriteComponent = ({ characterInfo }: Props) => {
             <div>
                 Loading...
             </div>
-        )
+        );
     }
     if (state.error) {
         return (
             <div>
                 Error: {state.error.message}
             </div>
-        )
+        );
     }
     if (!state.animation) {
         return (
             <div>
                 No animation defined
             </div>
-        )
+        );
     }
 
     return (
@@ -180,7 +180,7 @@ const SpriteComponent = ({ characterInfo }: Props) => {
             <button onClick={() => setAnimation(die)}>Die</button>
             <button onClick={() => rotate(1)}>{'>>'}</button>
         </div>
-    )
+    );
 }
 
 export { SpriteComponent };
