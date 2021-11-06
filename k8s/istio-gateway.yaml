@@ -1,0 +1,41 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: character-creator-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: character-creator
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - character-creator-gateway
+  http:
+    - name: rest-server-route
+      match:
+      - uri:
+          prefix: /character-builder/v1
+      route:
+        - destination:
+            host: java-rest-server
+            port:
+              number: 8080
+    - name: client-route
+      route:
+        - destination:
+            host: rest-client
+            port:
+              number: 3000
+      

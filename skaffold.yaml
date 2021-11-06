@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta19
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - context: java11/
+    image: java-rest-server
+  - context: character-builder-client/
+    image: rest-client
+deploy:
+  kubectl:
+    manifests:
+    - k8s/**
+profiles:
+  - name: minikube
+    deploy:
+      kubeContext: minikube
+  - name: docker-desktop
+    deploy:
+      kubeContext: docker-desktop
