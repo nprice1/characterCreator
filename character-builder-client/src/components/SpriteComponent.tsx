@@ -98,7 +98,7 @@ const SpriteComponent = ({ characterInfo }: Props) => {
                 });
             } catch (e) {
                 setState({
-                    error: e,
+                    error: e as ApiError,
                 });
             }
         })();

@@ -61,7 +61,7 @@ const CharacterInfoComponent = () => {
                 });
             } catch (e) {
                 setData({
-                    error: e,
+                    error: e as ApiError,
                 });
             }
         })();
