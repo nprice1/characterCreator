@@ -10,13 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.nolanprice.model.CharacterInfo;
+import com.nolanprice.model.Equipment;
 import com.nolanprice.sprite.SpriteBuilder;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-26T17:45:10.977235Z[Etc/UTC]")
 @Controller
-@RequestMapping("${openapi.characterCreator.base-path:/character-builder/v1}")
+@RequestMapping("${openapi.characterCreator.base-path:/rest/character-builder/v1}")
 public class SpriteApiController implements SpriteApi {
 
     private static Logger LOGGER = LoggerFactory.getLogger(SpriteApiController.class);
@@ -38,7 +40,11 @@ public class SpriteApiController implements SpriteApi {
     @Override
     public ResponseEntity<byte[]> getSpriteSheet(CharacterInfo characterInfo) {
         try {
-            return ResponseEntity.ok(spriteBuilder.buildSpriteSheet(characterInfo));
+            return ResponseEntity.ok(spriteBuilder.buildSpriteSheet(characterInfo.getEquipment()
+                                                                                 .stream()
+                                                                                 .map(Equipment::getName)
+                                                                                 .collect(Collectors.toList()),
+                                                                    characterInfo.getRace()));
         } catch (Exception e) {
             LOGGER.error("Failed to generate sprite sheet", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

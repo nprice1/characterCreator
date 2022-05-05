@@ -13,13 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-26T17:45:10.977235Z[Etc/UTC]")
 @Validated

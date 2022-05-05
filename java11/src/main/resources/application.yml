@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: java-character-creator
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    date-format: com.nolanprice.RFC3339DateFormat
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+graphql:
+  servlet:
+    actuator-metrics: true
+    async:
+      timeout: 5000
+  playground:
+    enabled: true
+    cdn:
+      enabled: false
+      version: latest
+  voyager:
+    enabled: true

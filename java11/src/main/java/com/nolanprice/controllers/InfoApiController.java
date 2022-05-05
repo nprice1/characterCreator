@@ -15,7 +15,7 @@ import com.nolanprice.model.CharacterInfo;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-26T17:45:10.977235Z[Etc/UTC]")
 @Controller
-@RequestMapping("${openapi.characterCreator.base-path:/character-builder/v1}")
+@RequestMapping("${openapi.characterCreator.base-path:/rest/character-builder/v1}")
 public class InfoApiController implements InfoApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InfoApiController.class);

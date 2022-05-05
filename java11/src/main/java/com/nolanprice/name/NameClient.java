@@ -16,7 +16,8 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
+
+import graphql.com.google.common.collect.ImmutableList;
 
 @Component
 public class NameClient {

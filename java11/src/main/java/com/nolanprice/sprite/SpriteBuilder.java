@@ -1,12 +1,8 @@
 package com.nolanprice.sprite;
 
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -29,11 +25,10 @@ import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
 import com.nolanprice.Choice;
 import com.nolanprice.ChoiceUtils;
-import com.nolanprice.model.CharacterInfo;
-import com.nolanprice.model.Equipment;
+
+import graphql.com.google.common.collect.ImmutableList;
 
 @Component
 public class SpriteBuilder {
@@ -57,12 +52,7 @@ public class SpriteBuilder {
         ALLOWED_PATHS = allowedPaths;
     }
 
-    public byte[] buildSpriteSheet(CharacterInfo characterInfo) throws IOException {
-        String race = characterInfo.getRace();
-        List<String> equipmentNames = characterInfo.getEquipment()
-                                                   .stream()
-                                                   .map(Equipment::getName)
-                                                   .collect(Collectors.toList());
+    public byte[] buildSpriteSheet(List<String> equipmentNames, String race) throws IOException {
         String gender = GENDERS.get(RANDOM.nextInt(2));
 
         SubmissionPublisher<Set<String>> publisher = new SubmissionPublisher<>(EXECUTOR, 10);

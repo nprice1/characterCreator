@@ -52,7 +52,7 @@ components:
         race:
           type: string
           description: The race of the character
-        class:
+        characterClass:
           type: string
           description: The class for the character
         background:
