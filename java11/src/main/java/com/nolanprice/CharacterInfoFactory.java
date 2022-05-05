@@ -59,9 +59,9 @@ public class CharacterInfoFactory {
         try {
             // Kick off all requests that don't need any data
             CompletableFuture<Race> raceFuture = getRace();
-            CompletableFuture<CharacterClass> characterClassFuture = dndApiClient.getCharacterClass();
-            CompletableFuture<Background> backgroundFuture = dndApiClient.getBackground();
-            CompletableFuture<Alignment> alignmentFuture = dndApiClient.getAlignment();
+            CompletableFuture<CharacterClass> characterClassFuture = getCharacterClass();
+            CompletableFuture<Background> backgroundFuture = getBackground();
+            CompletableFuture<Alignment> alignmentFuture = getAlignment();
 
             Race race = raceFuture.get();
             CharacterClass characterClass = characterClassFuture.get();
@@ -134,6 +134,18 @@ public class CharacterInfoFactory {
 
     public CompletableFuture<Race> getRace() {
         return dndApiClient.getRace();
+    }
+
+    public CompletableFuture<CharacterClass> getCharacterClass() {
+        return dndApiClient.getCharacterClass();
+    }
+
+    public CompletableFuture<Background> getBackground() {
+        return dndApiClient.getBackground();
+    }
+
+    public CompletableFuture<Alignment> getAlignment() {
+        return dndApiClient.getAlignment();
     }
 
     public CompletableFuture<String> getName(Race race) {

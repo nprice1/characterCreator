@@ -1,9 +1,12 @@
 package com.nolanprice.graphql;
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.dataloader.DataLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +21,7 @@ import com.nolanprice.model.AbilityScore;
 import com.nolanprice.model.CharacterInfo;
 import com.nolanprice.model.Equipment;
 import com.nolanprice.model.Feature;
+import com.nolanprice.sprite.SpriteBuilder;
 
 import graphql.kickstart.tools.GraphQLResolver;
 import graphql.schema.DataFetchingEnvironment;
@@ -26,10 +30,12 @@ import graphql.schema.DataFetchingEnvironment;
 public class CharacterInfoResolver implements GraphQLResolver<CharacterInfo> {
 
     private final CharacterInfoFactory characterInfoFactory;
+    private final SpriteBuilder spriteBuilder;
 
     @Autowired
-    public CharacterInfoResolver(CharacterInfoFactory characterInfoFactory) {
+    public CharacterInfoResolver(CharacterInfoFactory characterInfoFactory, SpriteBuilder spriteBuilder) {
         this.characterInfoFactory = characterInfoFactory;
+        this.spriteBuilder = spriteBuilder;
     }
 
     public CompletableFuture<String> getRace(CharacterInfo characterInfo, DataFetchingEnvironment dataFetchingEnvironment) {
@@ -65,13 +71,7 @@ public class CharacterInfoResolver implements GraphQLResolver<CharacterInfo> {
         CompletableFuture<Background> backgroundFuture = loadBackground(dataFetchingEnvironment);
         return CompletableFuture.allOf(raceFuture,
                                        backgroundFuture)
-                                .thenApply(unused -> {
-                                    try {
-                                        return characterInfoFactory.getLanguages(raceFuture.get(), backgroundFuture.get());
-                                    } catch (Exception e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                });
+                                .thenApply(unused -> characterInfoFactory.getLanguages(raceFuture.join(), backgroundFuture.join()));
     }
 
     public CompletableFuture<Feature> getFeature(CharacterInfo characterInfo, DataFetchingEnvironment dataFetchingEnvironment) {
@@ -101,16 +101,10 @@ public class CharacterInfoResolver implements GraphQLResolver<CharacterInfo> {
         return CompletableFuture.allOf(raceFuture,
                                        classFuture,
                                        backgroundFuture)
-                                .thenApply(unused -> {
-                                    try {
-                                        return characterInfoFactory.getSkillsAndProficiencies(raceFuture.get(),
-                                                                                              classFuture.get(),
-                                                                                              backgroundFuture.get())
-                                                                   .getFirst();
-                                    } catch (Exception e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                });
+                                .thenApply(unused -> characterInfoFactory.getSkillsAndProficiencies(raceFuture.join(),
+                                                                                              classFuture.join(),
+                                                                                              backgroundFuture.join())
+                                                                         .getFirst());
     }
 
     public CompletableFuture<Set<String>> getProficiencies(CharacterInfo characterInfo, DataFetchingEnvironment dataFetchingEnvironment) {
@@ -120,16 +114,10 @@ public class CharacterInfoResolver implements GraphQLResolver<CharacterInfo> {
         return CompletableFuture.allOf(raceFuture,
                                        classFuture,
                                        backgroundFuture)
-                                .thenApply(unused -> {
-                                    try {
-                                        return characterInfoFactory.getSkillsAndProficiencies(raceFuture.get(),
-                                                                                              classFuture.get(),
-                                                                                              backgroundFuture.get())
-                                                                   .getSecond();
-                                    } catch (Exception e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                });
+                                .thenApply(unused -> characterInfoFactory.getSkillsAndProficiencies(raceFuture.join(),
+                                                                                              classFuture.join(),
+                                                                                              backgroundFuture.join())
+                                                                         .getSecond());
     }
 
     public CompletableFuture<AbilityScore> getStrength(CharacterInfo characterInfo, DataFetchingEnvironment dataFetchingEnvironment) {
@@ -157,13 +145,23 @@ public class CharacterInfoResolver implements GraphQLResolver<CharacterInfo> {
     }
 
     public CompletableFuture<List<Equipment>> getEquipment(CharacterInfo characterInfo, DataFetchingEnvironment dataFetchingEnvironment) {
-        CompletableFuture<Background> backgroundFuture = loadBackground(dataFetchingEnvironment);
-        CompletableFuture<CharacterClass> classFuture = loadCharacterClass(dataFetchingEnvironment);
-        return CompletableFuture.allOf(backgroundFuture,
-                                       classFuture)
-                                .thenCompose(unused -> {
+        return loadEquipment(dataFetchingEnvironment);
+    }
+
+    public CompletableFuture<String> getSpriteSheet(CharacterInfo characterInfo, DataFetchingEnvironment dataFetchingEnvironment) {
+        CompletableFuture<Race> raceFuture = loadRace(dataFetchingEnvironment);
+        CompletableFuture<List<Equipment>> equipmentFuture = loadEquipment(dataFetchingEnvironment);
+        return CompletableFuture.allOf(raceFuture,
+                                       equipmentFuture)
+                                .thenApply(unused -> {
                                     try {
-                                        return characterInfoFactory.getEquipment(classFuture.get(), backgroundFuture.get());
+                                        File spriteFile =  spriteBuilder.buildSpriteSheet(equipmentFuture.join()
+                                                                                                         .stream()
+                                                                                                         .map(Equipment::getName)
+                                                                                                         .collect(Collectors.toList()),
+                                                                                          raceFuture.join()
+                                                                                                    .getName());
+                                        return "/rest/character-builder/v1/sprite/" + spriteFile.getName();
                                     } catch (Exception e) {
                                         throw new RuntimeException(e);
                                     }
@@ -210,6 +208,12 @@ public class CharacterInfoResolver implements GraphQLResolver<CharacterInfo> {
 
     private CompletableFuture<List<Integer>> loadStatAllotments(DataFetchingEnvironment dataFetchingEnvironment) {
         return getTypesafeLoader(dataFetchingEnvironment, GraphQLContextBuilder.DataLoaders.STAT_ALLOTMENTS);
+    }
+
+    private CompletableFuture<List<Equipment>> loadEquipment(DataFetchingEnvironment dataFetchingEnvironment) {
+        DataLoader<Pair<CompletableFuture<CharacterClass>, CompletableFuture<Background>>, List<Equipment>> dataLoader = dataFetchingEnvironment.getDataLoader(GraphQLContextBuilder.DataLoaders.EQUIPMENT);
+        return dataLoader.load(Pair.of(loadCharacterClass(dataFetchingEnvironment),
+                                       loadBackground(dataFetchingEnvironment)));
     }
 
     private <T> CompletableFuture<T> getTypesafeLoader(DataFetchingEnvironment dataFetchingEnvironment,

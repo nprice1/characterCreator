@@ -43,18 +43,17 @@
                             <output>${basedir}</output>
                             <inputSpec>${basedir}/../swagger.yaml</inputSpec>
                             <generatorName>java</generatorName>
-                            <library>native</library>
                             <configOptions>
                                 <sourceFolder>target/generated-sources/openapi</sourceFolder>
                             </configOptions>
                             <modelPackage>com.nolanprice.model</modelPackage>
-                            <generateApis>false</generateApis>
+                            <apiPackage>com.nolanprice.controllers</apiPackage>
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <generateApiDocumentation>false</generateApiDocumentation>
                             <generateModelTests>false</generateModelTests>
                             <generateModelDocumentation>false</generateModelDocumentation>
                             <generateApiTests>false</generateApiTests>
-                            <skipIfSpecIsUnchanged>true</skipIfSpecIsUnchanged>
+                            <generatorName>spring</generatorName>
                         </configuration>
                     </execution>
                 </executions>
@@ -134,9 +133,9 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.swagger</groupId>
+            <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <version>1.6.2</version>
+            <version>2.2.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>

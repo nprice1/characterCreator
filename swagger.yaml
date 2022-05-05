@@ -1,6 +1,6 @@
 openapi: 3.0.0
 servers:
-  - url: http://localhost:8080/character-builder/v1
+  - url: http://localhost:8080/rest/character-builder/v1
 info:
   description: Random D&D 5th Edition Character Creator
   version: 1.0.0
@@ -32,6 +32,27 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CharacterInfo'
+      responses:
+        '200':
+          description: The sprite sheet for the provided character info
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+  /sprite/{name}:
+    get:
+      tags:
+        - sprite
+      summary: Get an existing sprite sheet by name
+      operationId: getSpriteSheetByName
+      parameters:
+        - in: path
+          name: name
+          description: The name of the sprite sheet to fetch
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: The sprite sheet for the provided character info

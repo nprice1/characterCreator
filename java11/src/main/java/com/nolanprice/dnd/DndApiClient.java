@@ -44,22 +44,27 @@ public class DndApiClient {
     }
 
     public CompletableFuture<Race> getRace() {
+        System.out.println("GET RACE");
         return fetchRandomApiReferenceValue(Endpoints.RACES, Race.class);
     }
 
     public CompletableFuture<CharacterClass> getCharacterClass() {
+        System.out.println("GET CLASS");
         return fetchRandomApiReferenceValue(Endpoints.CLASSES, CharacterClass.class);
     }
 
     public CompletableFuture<Background> getBackground() {
+        System.out.println("GET BACKGROUND");
         return fetchRandomApiReferenceValue(Endpoints.BACKGROUNDS, Background.class);
     }
 
     public CompletableFuture<Alignment> getAlignment() {
+        System.out.println("GET ALIGNMENT");
         return fetchRandomApiReferenceValue(Endpoints.ALIGNMENTS, Alignment.class);
     }
 
     public CompletableFuture<Choice<Equipment>> expandEquipmentChoices(Choice<Equipment> equipmentChoice) {
+        System.out.println("EXPAND EQUIPMENT WITH CHOICE");
         List<Equipment> newChoices = new ArrayList<>();
         List<CompletableFuture<Void>> equipmentFutures = new ArrayList<>();
         for (Equipment equipment : equipmentChoice.getFrom()) {
@@ -83,6 +88,7 @@ public class DndApiClient {
     }
 
     public CompletableFuture<Choice<Equipment>> expandEquipmentChoices(EquipmentOption equipmentOption) {
+        System.out.println("EXPAND EQUIPMENT WITH OPTION");
         return executeRequest(getApiUri(equipmentOption.getFrom()
                                                        .getEquipmentCategory()
                                                        .getUrl()), EquipmentList.class)

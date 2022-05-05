@@ -1,6 +1,5 @@
 type Query {
   newCharacter: CharacterInfo
-  sprites(equipmentNames: [String]!, race: String): String
 }
 
 type CharacterInfo {
@@ -27,6 +26,7 @@ type CharacterInfo {
     ideals: [String]
     bonds: [String]
     flaws: [String]
+    spriteSheet: String
 }
 
 type AbilityScore {

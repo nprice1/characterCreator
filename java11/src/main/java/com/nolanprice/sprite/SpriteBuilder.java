@@ -1,7 +1,7 @@
 package com.nolanprice.sprite;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,6 +40,7 @@ public class SpriteBuilder {
     private static final Random RANDOM = new Random();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(10);
+    public  static final String SPRITE_FOLDER = "sprites";
 
     private static final List<AllowedPaths> ALLOWED_PATHS;
     static {
@@ -52,7 +54,11 @@ public class SpriteBuilder {
         ALLOWED_PATHS = allowedPaths;
     }
 
-    public byte[] buildSpriteSheet(List<String> equipmentNames, String race) throws IOException {
+    public File getSpriteSheetFile(String name) {
+        return new File(String.format("%s/%s", SPRITE_FOLDER, name));
+    }
+
+    public File buildSpriteSheet(List<String> equipmentNames, String race) throws IOException {
         String gender = GENDERS.get(RANDOM.nextInt(2));
 
         SubmissionPublisher<Set<String>> publisher = new SubmissionPublisher<>(EXECUTOR, 10);
@@ -72,7 +78,7 @@ public class SpriteBuilder {
         try {
             countDownLatch.await();
             publisher.close();
-            return toByteArray(spriteSubscriber.getSpriteSheet());
+            return toFile(spriteSubscriber.getSpriteSheet());
         } catch (InterruptedException e) {
             Thread.currentThread()
                   .interrupt();
@@ -80,10 +86,10 @@ public class SpriteBuilder {
         }
     }
 
-    private byte[] toByteArray(BufferedImage bufferedImage) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(bufferedImage, "png", baos);
-        return baos.toByteArray();
+    private File toFile(BufferedImage bufferedImage) throws IOException {
+        File file = getSpriteSheetFile(UUID.randomUUID().toString());
+        ImageIO.write(bufferedImage, "png", file);
+        return file;
     }
 
     private Set<String> evaluateAllowedPaths(AllowedPaths allowedPaths,
