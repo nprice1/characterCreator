@@ -1,0 +1,46 @@
+type Query {
+  newCharacter: CharacterInfo
+  sprites(equipmentNames: [String]!, race: String): String
+}
+
+type CharacterInfo {
+    name: String
+    race: String
+    characterClass: String
+    background: String
+    alignment: String
+    strength: AbilityScore
+    dexterity: AbilityScore
+    intelligence: AbilityScore
+    wisdom: AbilityScore
+    constitution: AbilityScore
+    charisma: AbilityScore
+    proficiencyModifier: Int
+    skills: [String]
+    proficiencies: [String]
+    languages: [String]
+    equipment: [Equipment]
+    speed: String
+    hitDice: Int
+    feature: Feature
+    traits: [String]
+    ideals: [String]
+    bonds: [String]
+    flaws: [String]
+}
+
+type AbilityScore {
+    base: Int
+    modifier: Int
+    proficient: Boolean
+}
+
+type Equipment {
+    name: String
+    quantity: Int
+}
+
+type Feature {
+    name: String
+    description: [String]
+}

@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.ImmutableList;
 import com.nolanprice.dnd.Alignment;
 import com.nolanprice.dnd.ApiReference;
 import com.nolanprice.dnd.Background;
@@ -30,12 +29,14 @@ import com.nolanprice.model.Equipment;
 import com.nolanprice.model.Feature;
 import com.nolanprice.name.NameClient;
 
+import graphql.com.google.common.collect.ImmutableList;
+
 @Component
 public class CharacterInfoFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CharacterInfoFactory.class);
 
-    private static final List<Integer> STAT_CHOICES = ImmutableList.of(15, 14, 13, 12, 10, 8);
+    public static final List<Integer> STAT_CHOICES = ImmutableList.of(15, 14, 13, 12, 10, 8);
 
     private final NameClient nameClient;
     private final DndApiClient dndApiClient;
@@ -46,12 +47,18 @@ public class CharacterInfoFactory {
         this.dndApiClient = dndApiClient;
     }
 
+    public static List<Integer> getBaseStatAllotments() {
+        List<Integer> baseStatAllotments = new ArrayList<>(STAT_CHOICES);
+        Collections.shuffle(baseStatAllotments);
+        return baseStatAllotments;
+    }
+
     public CharacterInfo createCharacterInfo() {
         // We are going to modify this object
         CharacterInfo characterInfo = new CharacterInfo();
         try {
             // Kick off all requests that don't need any data
-            CompletableFuture<Race> raceFuture = dndApiClient.getRace();
+            CompletableFuture<Race> raceFuture = getRace();
             CompletableFuture<CharacterClass> characterClassFuture = dndApiClient.getCharacterClass();
             CompletableFuture<Background> backgroundFuture = dndApiClient.getBackground();
             CompletableFuture<Alignment> alignmentFuture = dndApiClient.getAlignment();
@@ -60,23 +67,43 @@ public class CharacterInfoFactory {
             CharacterClass characterClass = characterClassFuture.get();
             Background background = backgroundFuture.get();
             Alignment alignment = alignmentFuture.get();
-            String name = nameClient.getCharacterName(race.getName())
-                                    .get();
+            String name = getName(race).get();
 
             characterInfo.setName(name);
             characterInfo.setRace(race.getName());
             characterInfo.setBackground(background.getName());
-            characterInfo.setPropertyClass(characterClass.getName());
+            characterInfo.setCharacterClass(characterClass.getName());
             characterInfo.setAlignment(alignment.getName());
 
             List<Integer> baseStatAllotments = new ArrayList<>(STAT_CHOICES);
             Collections.shuffle(baseStatAllotments);
-            characterInfo.setStrength(generateAbilityScores("STR", baseStatAllotments.get(0), race, characterClass));
-            characterInfo.setDexterity(generateAbilityScores("DEX", baseStatAllotments.get(1), race, characterClass));
-            characterInfo.setIntelligence(generateAbilityScores("INT", baseStatAllotments.get(2), race, characterClass));
-            characterInfo.setWisdom(generateAbilityScores("WIS", baseStatAllotments.get(3), race, characterClass));
-            characterInfo.setConstitution(generateAbilityScores("CON", baseStatAllotments.get(4), race, characterClass));
-            characterInfo.setCharisma(generateAbilityScores("CHA", baseStatAllotments.get(5), race, characterClass));
+            characterInfo.setStrength(generateAbilityScores("STR",
+                                                             baseStatAllotments.get(0),
+                                                             race,
+                                                             characterClass));
+            characterInfo.setDexterity(generateAbilityScores("DEX",
+                                                             baseStatAllotments.get(1),
+                                                             race,
+                                                             characterClass));
+            characterInfo.setIntelligence(generateAbilityScores("INT",
+                                                                baseStatAllotments.get(2),
+                                                                race,
+                                                                characterClass));
+            characterInfo.setWisdom(generateAbilityScores("WIS",
+                                                          baseStatAllotments.get(3),
+                                                          race,
+                                                          characterClass));
+            characterInfo.setConstitution(generateAbilityScores("CON",
+                                                                baseStatAllotments.get(4),
+                                                                race,
+                                                                characterClass));
+            characterInfo.setCharisma(generateAbilityScores("CHA",
+                                                            baseStatAllotments.get(5),
+                                                            race,
+                                                            characterClass));
+
+            characterInfo.setSpeed(getSpeed(race));
+            characterInfo.setHitDice(getHitDice(characterClass));
 
             Pair<Set<String>, Set<String>> skillsAndProficiencies = getSkillsAndProficiencies(race, characterClass, background);
             characterInfo.setSkills(new ArrayList<>(skillsAndProficiencies.getFirst()));
@@ -84,13 +111,7 @@ public class CharacterInfoFactory {
 
             characterInfo.setLanguages(new ArrayList<>(getLanguages(race, background)));
 
-            characterInfo.setSpeed(String.format("%s feet", race.getSpeed()));
-            characterInfo.setHitDice(characterClass.getHitDie());
-
-            Feature feature = new Feature();
-            feature.setDescription(background.getFeature().getDesc());
-            feature.setName(background.getFeature().getName());
-            characterInfo.setFeature(feature);
+            characterInfo.setFeature(getFeature(background));
 
             characterInfo.setIdeals(getIdeals(background));
             characterInfo.setTraits(ChoiceUtils.makeRandomChoices(background.getPersonalityTraits()));
@@ -100,7 +121,8 @@ public class CharacterInfoFactory {
             // For now just assume level 1
             characterInfo.setProficiencyModifier(2);
 
-            characterInfo.setEquipment(getEquipment(characterClass, background));
+            characterInfo.setEquipment(getEquipment(characterClass, background).get());
+
         } catch (InterruptedException e) {
             Thread.currentThread()
                   .interrupt();
@@ -110,10 +132,31 @@ public class CharacterInfoFactory {
         return characterInfo;
     }
 
-    private AbilityScore generateAbilityScores(String statAbbreviation,
-                                               Integer baseStat,
-                                               Race race,
-                                               CharacterClass characterClass) {
+    public CompletableFuture<Race> getRace() {
+        return dndApiClient.getRace();
+    }
+
+    public CompletableFuture<String> getName(Race race) {
+        return nameClient.getCharacterName(race.getName());
+    }
+
+    public String getSpeed(Race race) {
+        return String.format("%s feet", race.getSpeed());
+    }
+
+    public Integer getHitDice(CharacterClass characterClass) {
+        return characterClass.getHitDie();
+    }
+
+    public Feature getFeature(Background background) {
+        return new Feature().name(background.getFeature().getName())
+                            .description(background.getFeature().getDesc());
+    }
+
+    public AbilityScore generateAbilityScores(String statAbbreviation,
+                                              Integer baseStat,
+                                              Race race,
+                                              CharacterClass characterClass) {
         Integer bonus = race.getAbilityBonuses()
                             .stream()
                             .filter(abilityScore -> abilityScore.getAbilityScore().getName().equals(statAbbreviation))
@@ -129,7 +172,7 @@ public class CharacterInfoFactory {
                                  .proficient(proficient);
     }
 
-    private Pair<Set<String>, Set<String>> getSkillsAndProficiencies(Race race, CharacterClass characterClass, Background background) {
+    public Pair<Set<String>, Set<String>> getSkillsAndProficiencies(Race race, CharacterClass characterClass, Background background) {
         List<ApiReference> allProficiencies = new ArrayList<>();
 
         // First add all guaranteed proficiencies for the race, character class, and background
@@ -161,7 +204,7 @@ public class CharacterInfoFactory {
         return Pair.of(skills, proficiencies);
     }
 
-    private Set<String> getLanguages(Race race, Background background) {
+    public Set<String> getLanguages(Race race, Background background) {
         List<ApiReference> allLanguages = new ArrayList<>();
         allLanguages.addAll(race.getLanguages());
         if (background.getLanguages() != null) {
@@ -175,22 +218,23 @@ public class CharacterInfoFactory {
                            .collect(Collectors.toSet());
     }
 
-    private List<Equipment> getEquipment(CharacterClass characterClass, Background background) throws
-                                                                                               ExecutionException,
-                                                                                               InterruptedException {
+    public CompletableFuture<List<Equipment>> getEquipment(CharacterClass characterClass,
+                                                            Background background) {
         Set<com.nolanprice.dnd.Equipment> allEquipment = new HashSet<>();
         allEquipment.addAll(characterClass.getStartingEquipment());
         allEquipment.addAll(background.getStartingEquipment());
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
         for (Choice<com.nolanprice.dnd.Equipment> choice : characterClass.getStartingEquipmentOptions()) {
-            allEquipment.addAll(makeRandomEquipmentChoices(choice));
+            futures.add(makeRandomEquipmentChoices(choice).thenAccept(allEquipment::addAll));
         }
         for (Choice<com.nolanprice.dnd.Equipment> choice : background.getStartingEquipmentOptions()) {
-            allEquipment.addAll(makeRandomEquipmentChoices(choice));
+            futures.add(makeRandomEquipmentChoices(choice).thenAccept(allEquipment::addAll));
         }
-        return allEquipment.stream()
-                           .map(this::mapEquipmentFromExternalModel)
-                           .filter(Objects::nonNull)
-                           .collect(Collectors.toList());
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[] {}))
+                                .thenApply(unused -> allEquipment.stream()
+                                                                 .map(this::mapEquipmentFromExternalModel)
+                                                                 .filter(Objects::nonNull)
+                                                                 .collect(Collectors.toList()));
     }
 
     private Equipment mapEquipmentFromExternalModel(com.nolanprice.dnd.Equipment dndEquipment) {
@@ -202,34 +246,32 @@ public class CharacterInfoFactory {
                               .quantity(dndEquipment.getQuantity());
     }
 
-    private List<String> getIdeals(Background background) {
+    public List<String> getIdeals(Background background) {
         return ChoiceUtils.makeRandomChoices(background.getIdeals())
                           .stream()
                           .map(Ideal::getDesc)
                           .collect(Collectors.toList());
     }
 
-    private List<com.nolanprice.dnd.Equipment> makeRandomEquipmentChoices(Choice<com.nolanprice.dnd.Equipment> choice) throws
-                                                                                                                       ExecutionException,
-                                                                                                                       InterruptedException {
-        List<com.nolanprice.dnd.Equipment> chosenEquipment = dndApiClient.expandEquipmentChoices(choice)
-                                                                         .thenApply(ChoiceUtils::makeRandomChoices)
-                                                                         .get();
-        List<com.nolanprice.dnd.Equipment> finalEquipment = new ArrayList<>();
-        List<CompletableFuture<Void>> expandedChoicesFutures = new ArrayList<>();
-        for (com.nolanprice.dnd.Equipment equipment : chosenEquipment) {
-            if (equipment.getEquipmentOption() != null) {
-                expandedChoicesFutures.add(dndApiClient.expandEquipmentChoices(equipment.getEquipmentOption())
-                                                       .thenApply(ChoiceUtils::makeRandomChoices)
-                                                       .thenAccept(finalEquipment::addAll));
-            } else {
-                finalEquipment.add(equipment);
-            }
-        }
-        // Wait for the expanded entries to finish
-        CompletableFuture.allOf(expandedChoicesFutures.toArray(new CompletableFuture[] {}))
-                         .get();
-        return finalEquipment;
+    private CompletableFuture<List<com.nolanprice.dnd.Equipment>> makeRandomEquipmentChoices(Choice<com.nolanprice.dnd.Equipment> choice) {
+        return dndApiClient.expandEquipmentChoices(choice)
+                           .thenApply(ChoiceUtils::makeRandomChoices)
+                           .thenCompose(chosenEquipment -> {
+                               List<com.nolanprice.dnd.Equipment> finalEquipment = new ArrayList<>();
+                               List<CompletableFuture<Void>> expandedChoicesFutures = new ArrayList<>();
+                               for (com.nolanprice.dnd.Equipment equipment : chosenEquipment) {
+                                   if (equipment.getEquipmentOption() != null) {
+                                       expandedChoicesFutures.add(dndApiClient.expandEquipmentChoices(equipment.getEquipmentOption())
+                                                                              .thenApply(ChoiceUtils::makeRandomChoices)
+                                                                              .thenAccept(finalEquipment::addAll));
+                                   } else {
+                                       finalEquipment.add(equipment);
+                                   }
+                               }
+                               // Wait for the expanded entries to finish
+                               return CompletableFuture.allOf(expandedChoicesFutures.toArray(new CompletableFuture[] {}))
+                                                       .thenApply(unused -> finalEquipment);
+                           });
     }
 
 }
