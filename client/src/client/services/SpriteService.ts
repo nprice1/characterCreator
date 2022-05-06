@@ -26,4 +26,23 @@ export class SpriteService {
         return result.body;
     }
 
+    /**
+     * Get an existing sprite sheet by name
+     * @param name The name of the sprite sheet to fetch
+     * @returns any The sprite sheet for the provided character info
+     * @throws ApiError
+     */
+    public static async getSpriteSheetByName(
+        name: string,
+    ): Promise<any> {
+        const result = await __request({
+            method: 'GET',
+            path: `/sprite/${name}`,
+            headers: {
+                'Accept': 'image/png'
+            },
+        });
+        return result.body;
+    }
+
 }

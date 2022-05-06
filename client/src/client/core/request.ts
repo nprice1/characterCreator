@@ -146,10 +146,10 @@ async function getResponseBody(response: Response): Promise<any> {
         const contentType = response.headers.get('Content-Type');
         if (contentType) {
             const isJSON = contentType.toLowerCase().startsWith('application/json');
-            const isImage = contentType.toLowerCase().startsWith('image/');
+            const isBlob = contentType.toLocaleLowerCase().startsWith(`image/`);
             if (isJSON) {
                 return await response.json();
-            } else if (isImage) {
+            } else if (isBlob) {
                 return await response.blob();
             } else {
                 return await response.text();

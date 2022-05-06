@@ -168,6 +168,10 @@ public class CharacterInfoResolver implements GraphQLResolver<CharacterInfo> {
                                 });
     }
 
+    public CompletableFuture<Integer> getProficiencyModifier(CharacterInfo characterInfo) {
+        return CompletableFuture.completedFuture(2);
+    }
+
     private CompletableFuture<AbilityScore> getAbilityScore(DataFetchingEnvironment dataFetchingEnvironment,
                                                             String statAbbreviation,
                                                             int statIndex) {

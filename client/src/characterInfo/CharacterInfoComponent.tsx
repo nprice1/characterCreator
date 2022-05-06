@@ -1,12 +1,11 @@
-import React from 'react';
-import { SpriteComponent } from './SpriteComponent';
-import { CharacterInfo, InfoService, ApiError, AbilityScore, Equipment } from '../client';
+import { SpriteComponent } from './../sprite/SpriteComponent';
+import { CharacterInfo, AbilityScore, Equipment } from '../client';
 import './CharacterInfoComponent.css';
+import { useCharacterInfo } from './useCharacterInfo';
 
-type State = {
-    characterInfo?: CharacterInfo;
-    error?: ApiError;
-}
+type Props = {
+    useApollo: boolean;
+};
 
 const getModifier = (abilityScore: AbilityScore): string => {
     const modifier = abilityScore.modifier;
@@ -18,7 +17,7 @@ const getModifier = (abilityScore: AbilityScore): string => {
     } else {
         return `+${modifier}`;
     }
-}
+};
 
 const generateList = (listName?: string, values?: string[]): JSX.Element => {
     if (!values) {
@@ -40,55 +39,38 @@ const generateList = (listName?: string, values?: string[]): JSX.Element => {
             </ul>
         </div>
     )
-}
+};
 
 const getHp = (info: CharacterInfo): number => {
     if (!info.hitDice || !info.constitution || (info.constitution.modifier == null)) {
         return 0;
     }
     return info.hitDice + info.constitution.modifier;
-}
+};
 
-const CharacterInfoComponent = () => {
-    const [state, setData] = React.useState<State | undefined>(undefined);
-
-    React.useEffect(() => {
-        (async () => {
-            try {
-                const characterInfo: CharacterInfo = await InfoService.getInfo();
-                setData({
-                    characterInfo,
-                });
-            } catch (e) {
-                setData({
-                    error: e as ApiError,
-                });
-            }
-        })();
-    }, []);
-
-    if (!state) {
+const CharacterInfoComponent = ({ useApollo }: Props) => {
+    const { loading, error, characterInfo } = useCharacterInfo(useApollo);
+    if (loading) {
         return (
             <div>
                 Loading...
             </div>
         )
     }
-    if (state.error) {
+    if (error) {
         return (
             <div>
-                Error: {state.error.message}
+                Error: {error.message}
             </div>
         )
     }
-    if (!state.characterInfo) {
+    if (!characterInfo) {
         return (
             <div>
                 No character info
             </div>
         )
     }
-    const characterInfo = state.characterInfo;
     const statNames: (keyof CharacterInfo)[] = [
         'intelligence',
         'wisdom',
@@ -105,7 +87,7 @@ const CharacterInfoComponent = () => {
                 <h3>Race</h3>
                 <p>{characterInfo.race}</p>
                 <h3>Class</h3>
-                <p>{characterInfo.class}</p>
+                <p>{characterInfo.characterClass}</p>
                 <h3>Background</h3>
                 <p>{characterInfo.background}</p>
                 <div className='minor-stats'>

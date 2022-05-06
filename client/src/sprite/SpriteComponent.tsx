@@ -63,6 +63,7 @@ const numColumns: number = 13;
 
 type State = {
     sprite?: any;
+    spriteUrl?: string
     error?: ApiError;
     animation?: Animation;
 }
@@ -91,11 +92,18 @@ const SpriteComponent = ({ characterInfo }: Props) => {
     React.useEffect(() => {
         (async () => {
             try {
-                const sprite: any = await SpriteService.getSpriteSheet(characterInfo);
-                setState({
-                    sprite,
-                    animation: walk,
-                });
+                if (characterInfo && characterInfo.spriteSheet) {
+                    setState({
+                        spriteUrl: `http://localhost:8080${characterInfo.spriteSheet}`,
+                        animation: walk,
+                    });
+                } else {
+                    const sprite = await SpriteService.getSpriteSheet(characterInfo);
+                    setState({
+                        sprite,
+                        animation: walk,
+                    });
+                }
             } catch (e) {
                 setState({
                     error: e as ApiError,
@@ -135,6 +143,13 @@ const SpriteComponent = ({ characterInfo }: Props) => {
         });
     }
 
+    const getImage = () => {
+        if (state?.spriteUrl) {
+            return state.spriteUrl;
+        }
+        return URL.createObjectURL(state?.sprite);
+    }
+
     if (!state) {
         return (
             <div>
@@ -162,7 +177,7 @@ const SpriteComponent = ({ characterInfo }: Props) => {
             <div className="sprite">
                 <Spritesheet
                     key={state.animation.id + state.animation.currentRowIndex}
-                    image={URL.createObjectURL(state.sprite)}
+                    image={getImage()}
                     widthFrame={64}
                     heightFrame={64}
                     fps={12}

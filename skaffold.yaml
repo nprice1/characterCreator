@@ -6,16 +6,13 @@ build:
   artifacts:
   - context: java11/
     image: java-rest-server
-  - context: character-builder-client/
+  - context: client/
     image: rest-client
 deploy:
   kubectl:
     manifests:
     - k8s/**
 profiles:
-  - name: minikube
-    deploy:
-      kubeContext: minikube
   - name: docker-desktop
     deploy:
       kubeContext: docker-desktop

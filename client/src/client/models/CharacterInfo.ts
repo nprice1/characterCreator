@@ -21,7 +21,7 @@ export type CharacterInfo = {
     /**
      * The class for the character
      */
-    class?: string;
+    characterClass?: string;
     /**
      * The name of the background for the character
      */
@@ -57,4 +57,8 @@ export type CharacterInfo = {
     ideals?: Array<string>;
     bonds?: Array<string>;
     flaws?: Array<string>;
+    /**
+     * The URL to fetch a sprite sheet
+     */
+    spriteSheet?: string;
 }

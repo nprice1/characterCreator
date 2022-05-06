@@ -144,6 +144,9 @@ components:
           items:
             type: string
             description: A flaw of the character
+        spriteSheet:
+          type: string
+          description: The URL to fetch a sprite sheet
     Feature:
       type: object
       properties:
